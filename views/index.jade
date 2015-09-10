@@ -15,13 +15,13 @@ html
         data.addColumn('number', '体脂肪率');
         data.addRows(JSON.parse('!{json}'));
 
-        var options = { 'title': '体重記録',
-                        'legend': 'left',
-                        'is3D': true,
-                        'width': 400,
-                        'height': 300 };
+        var options = {
+          'title': '体重記録',
+          'is3D': true,
+          'height': 640
+        };
 
-        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
   body

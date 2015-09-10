@@ -18,6 +18,16 @@ router.get('/record', function(req, res, next) {
   });
 });
 
+router.get('/record/index', function(req, res, next) {
+  Record.readAll(function(docs, json) {
+    for (i = 0; i < docs.length; i++) {
+      docs[i].id = docs[i]._id;
+      delete docs[i]._id;
+    }
+    res.send({ data : docs });
+  });
+});
+
 router.post('/record/create', function(req, res, next) {
   var w = req.param('weight');
   var f = req.param('fat');
