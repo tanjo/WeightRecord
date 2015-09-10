@@ -9,12 +9,30 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/record', function(req, res, next) {
-  Record.findJson(function(docs) {
+  Record.readAll(function(docs, json) {
     res.render('index', {
       title: 'Weight Record',
       items: docs,
-      json: JSON.stringify(docs)
+      json: JSON.stringify(json)
     });
+  });
+});
+
+router.post('/record/create', function(req, res, next) {
+  var w = req.param('weight');
+  var f = req.param('fat');
+  var d = req.param('date');
+
+  console.log(req.body);
+
+  if (req.body) {
+    w = req.body.weight;
+    f = req.body.fat;
+    d = req.body.date;
+  }
+
+  Record.create(w, f, d, function(result) {
+    res.send({ result: result });
   });
 });
 

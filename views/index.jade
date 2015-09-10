@@ -1,54 +1,39 @@
-extends layout
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
+    script(type='text/javascript', src='https://www.google.com/jsapi')
+    script(type='text/javascript').
+      google.load('visualization', '1.0', {'packages':['corechart']});
+      google.setOnLoadCallback(drawChart);
 
-block content
-  h1= title
-  div(id='chart1')
-    svg
-  - var weights = items[0].values;
-  - var fats = items[1].values;
-  - for (i = 0; i < weights.length; i++) {
-    div(class="item")
-      - var a = new Date(weights[i][0] * 1000);
-      - var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-      - var year = a.getFullYear();
-      - var month = months[a.getMonth()];
-      - var date = a.getDate();
-      - var hour = a.getHours();
-      - var min = a.getMinutes();
-      - var sec = a.getSeconds();
-      - var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
-      h2 #{time}
-      p 体重
-      p #{weights[i][1]}
-      p 体脂肪率
-      p #{fats[i][1]} %
-  - }
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', '日付');
+        data.addColumn('number', '体重');
+        data.addColumn('number', '体脂肪率');
+        data.addRows(JSON.parse('!{json}'));
 
-  script.
-    window.onload = function(){
-      nv.addGraph(function() {
-        var chart = nv.models.cumulativeLineChart()
-          .x(function(d) { return d[0] * 1000 })
-          .y(function(d) { return d[1] })
-          .color(d3.scale.category10().range())
-          .useInteractiveGuideline(true)
-          ;
+        var options = { 'title': '体重記録',
+                        'legend': 'left',
+                        'is3D': true,
+                        'width': 400,
+                        'height': 300 };
 
-        chart.xAxis
-          .tickFormat(function(d) {
-            return d3.time.format('%x')(new Date(d))
-          });
-
-        chart.yAxis.tickFormat(d3.format(',f'));
-
-        d3.select('#chart1 svg')
-          .datum(JSON.parse('!{json}'))
-          .transition().duration(500)
-          .call(chart)
-          ;
-
-        nv.utils.windowResize(chart.update);
-
-        return chart;
-      });
-    }
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
+      }
+  body
+    h1= title
+    div(id='chart_div')
+      svg
+    - if (items) {
+      table
+        - for (i = 0; i < items.length; i++) {
+          tr
+            td #{items[i].date}
+            td #{items[i].weight}
+            td #{items[i].fat}
+        - }
+    - }
