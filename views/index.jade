@@ -1,39 +1,4 @@
-doctype html
-html
-  head
-    title= title
-    link(rel='stylesheet', type='text/css', href='/stylesheets/style.css')
-    script(type='text/javascript', src='https://www.google.com/jsapi')
-    script(type='text/javascript').
-      google.load('visualization', '1.0', {'packages':['corechart']});
-      google.setOnLoadCallback(drawChart);
+extends layout
 
-      function drawChart() {
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', '日付');
-        data.addColumn('number', '体重');
-        data.addColumn('number', '体脂肪率');
-        data.addRows(JSON.parse('!{json}'));
-
-        var options = {
-          'title': '体重記録',
-          'is3D': true,
-          'height': 640
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-  body
-    h1= title
-    div(id='chart_div')
-      svg
-    - if (items) {
-      table
-        - for (i = 0; i < items.length; i++) {
-          tr
-            td #{items[i].date}
-            td #{items[i].weight}
-            td #{items[i].fat}
-        - }
-    - }
+block content
+  h1 Hello World!
