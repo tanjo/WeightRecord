@@ -40,3 +40,13 @@
   ]
 }
 ```
+
+## Heroku
+
+### config
+
+```
+heroku config:set BASIC_AUTH_WEIGHTRECORD_USERNAME=hogehoge
+heroku config:set BASIC_AUTH_WEIGHTRECORD_PASSWORD=fugafuga
+heroku config:set WEIGHTRECORD_MONGODB_URL=???
+```

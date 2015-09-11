@@ -11,7 +11,13 @@ var MONGODB_COLLECTION = 'weightRecord';
  * @param {Function(db.collection)} callback
  */
 var connect = function(callback) {
-  MongoClient.connect(MONGODB_URL, function(err, db) {
+  var url = process.env.WEIGHTRECORD_MONGODB_URL;
+
+  if (!url) {
+    url = MONGODB_URL;
+  }
+
+  MongoClient.connect(url, function(err, db) {
     assert.equal(null, err);
     var collection = db.collection(MONGODB_COLLECTION);
     callback(db, collection);
