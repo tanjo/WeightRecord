@@ -10,6 +10,15 @@ var records = require('./routes/record');
 
 var app = express();
 
+var basicAuth = require('basic-auth-connect');
+
+var username = process.env.BASIC_AUTH_WEIGHTRECORD_USERNAME;
+var password = process.env.BASIC_AUTH_WEIGHTRECORD_PASSWORD;
+
+if (username && password) {
+  app.use(basicAuth(username, password));
+}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -55,6 +64,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;
